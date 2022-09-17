@@ -1,14 +1,24 @@
 import { useRef, useState } from "react";
 import "../styles/Filtres.css";
 import { useScrollbar } from "../hooks/useScrollbar";
-import HelpBtn from "./HelpBtn";
 import Checkboxes from "./Checkboxes";
-export default function WrapperList(params) {
-  const [medianTemp, setMedianTemp] = useState(() => 0);
-  const [maxTemp, setMaxTemp] = useState(() => 0);
-  const [minTemp, setMinTemp] = useState(() => 0);
-  const [medianDownfall, setMedianDownfall] = useState(() => 200);
-  const [angle, setAngle] = useState(() => 15);
+import Temperature from "./Temperature";
+
+export default function WrapperList({
+  helpWindow,
+  setHelpWindow,
+  landType,
+  tmax,
+  tmin,
+  tavr,
+  relifAspect,
+  Langle
+}) {
+  const [medianDownfall, setMedianDownfall] = useState(() =>
+    Math.round(relifAspect)
+  );
+  const [angle, setAngle] = useState(() => Math.round(Langle));
+
   let needScroll = true;
   const listWrapper = useRef(null);
   useScrollbar(listWrapper, needScroll);
@@ -19,40 +29,13 @@ export default function WrapperList(params) {
         style={{ height: needScroll ? "80vh" : "auto", minHeight: "60vh" }}
       >
         <ul className="filtresSubOptions">
-          <li className="option1 option">
-            <HelpBtn />
-
-            <h4>Средняя температура: {medianTemp}</h4>
-            <input
-              type="range"
-              onChange={(event) => setMedianTemp(() => event.target.value)}
-              min={-55}
-              max={55}
-              step={0.1}
-              value={medianTemp}
-              className="slider medianSlider"
-            ></input>
-            <h4>Максимальная температура: {maxTemp}</h4>
-            <input
-              type="range"
-              onChange={(event) => setMaxTemp(() => event.target.value)}
-              min={-55}
-              max={55}
-              step={0.1}
-              value={maxTemp}
-              className="slider maxSlider"
-            ></input>
-            <h4>Минимальная температура: {minTemp}</h4>
-            <input
-              type="range"
-              onChange={(event) => setMinTemp(() => event.target.value)}
-              min={-55}
-              max={55}
-              step={0.1}
-              value={minTemp}
-              className="slider minSlider"
-            ></input>
-          </li>
+          <Temperature
+            helpWindow={helpWindow}
+            setHelpWindow={setHelpWindow}
+            tmax={tmax}
+            tmin={tmin}
+            tavr={tavr}
+          />
           <li className="option2 option">
             <h4>Cреднее количество осадков: {medianDownfall}мм</h4>
             <input
@@ -65,11 +48,11 @@ export default function WrapperList(params) {
               className="slider-downfall"
             ></input>
           </li>
-          <li className="option4 option">
+          <li className="option3 option">
             уклон рельефа местности, °
             <div className="ing">
               <div className="angle" />
-              <div className="view_angle">{angle}</div>
+              <div className="view_angle">{angle}°</div>
             </div>
             <input
               type="range"
@@ -81,9 +64,9 @@ export default function WrapperList(params) {
               className="slider"
             ></input>
           </li>
-          <li className="option3 option">
+          <li className="option4 option">
             Оценка состава и плотности сложения верхнего слоя почв
-            <Checkboxes list={{ name: 1, chosed: 0 }}></Checkboxes>
+            <Checkboxes landType={landType}></Checkboxes>
           </li>
         </ul>
       </div>
