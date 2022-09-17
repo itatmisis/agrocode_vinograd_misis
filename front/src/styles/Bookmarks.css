@@ -1,0 +1,16 @@
+.section-bookmarks{
+  position: absolute;
+  height: 26vh;
+  width: 17vw;
+  background-color: #fff;
+  right:  calc( 21px);
+  top: 120px;
+  z-index: 1;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 24px;
+  align-items: center;
+  box-shadow: 0px 2px 8px rgba(33, 37, 41, 0.3), 0px 0px 1px rgba(33, 37, 41, 0.24);
+}
