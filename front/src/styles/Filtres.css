@@ -13,11 +13,6 @@
     width: 494px;
     height: 1037px;
 }
-.selectShop{
-  width: 70%;
-  margin-top: 26px;
-  height: 40px;
-}
 
 .filtresSubOptions{
   display: flex;
@@ -32,7 +27,7 @@
     line-height: 140%;
     color: #FFFFFF;
 }
-.slider{
+.slider,.slider-downfall{
   width: 80%;
   height: 10px;
   border: 1px solid black;
@@ -41,13 +36,42 @@
   background: transparent;
     
 }
+.slider::-moz-range-progress{
+  background: #000;
+  height: 100%;
+}
+.maxSlider::-moz-range-progress{
+  background: #CB6E47;
+  height: 100%;
+}
+.medianSlider::-moz-range-progress{
+background:#373737;
+height: 100%;}
+.slider-downfall::-moz-range-progress{
+  background-color: black;
+  height: 100%;
+}
+.minSlider::-moz-range-progress{
+  background: #4C70D2;;
+}
 .slider::-moz-range-thumb {
   height: 15px;
   width: 15px;
-  background: white;
-  border: 2px solid black;
+  background-color: #fff;
+  border:2px solid black;
+  
+
   margin-top: -5px;
-  border-radius: 50%;
+}
+
+.slider-downfall::-moz-range-thumb {
+  height: 36px;
+  width: 36px;
+  background: url('../images/Rain.png');
+  background-repeat: no-repeat;
+    background-size: cover;
+  border: none;
+  margin-top: -5px;
 }
 .option{
   background: rgba(191, 191, 191, 0.36);
@@ -67,4 +91,22 @@
   color:white;
   border:none;
   background-color: transparent;
+}
+.angle{
+  width: 233px;
+    height: 92px;
+  background: url("../images/angle.png");
+  background-repeat: no-repeat;
+    background-size: cover;
+}
+.ing{
+  position: relative;
+}
+.view_angle{
+  position: absolute;
+  top: 60%;
+    right: 30%;
+}
+.os-scrollbar-handle{
+  margin-left: 10px;
 }

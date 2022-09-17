@@ -8,14 +8,15 @@ import MapGL, {
 import { useLayoutEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "../styles/Map_bx.css";
-export default function Map_bx(props) {
+export default function Map_bx({ mapStyle }) {
   const [viewport, setViewport] = useState({
-    latitude: 45.137451890638886,
-    longitude: -68.13734351262877,
+    latitude: 56.009097,
+    longitude: 92.872515,
     zoom: 5,
   });
   const [maps, setMaps] = useState(() => <div className="map"></div>);
   // example of coords use
+
   const data = {
     type: "Feature",
     geometry: {
@@ -46,41 +47,48 @@ export default function Map_bx(props) {
       ],
     },
   };
-  useLayoutEffect(()=>{
-      setMaps(() => (
-        <MapGL
-          mapStyle="mapbox://styles/risinglight/cl83dlzfp003n15priila25c1"
-          accessToken={process.env.REACT_APP_MAPS_API_KEY}
-          latitude={viewport.latitude}
-          longitude={viewport.longitude}
-          zoom={viewport.zoom}
-          onViewportChange={setViewport}
-          className="map"
-        >
-          <Source id="maine" type="geojson" data={data} />
-          <Layer
-            id="maine"
-            type="fill"
-            source="maine"
-            paint={{
-              "fill-color": "#088",
-              "fill-opacity": 0.8,
-            }}
-          />
-          <GeolocateControl className="geo-control" />
-          <NavigationControl
-            showCompass={false}
-            showZoom
-            position="top-right"
-            mapStyle={{background: "black"}}
-          />
-        </MapGL>
-      ));
-  },[])
-  
-  return <section>
-  
-  {maps}
-  </section>;
-  
+  useLayoutEffect(() => {
+    setMaps(() => (
+      <MapGL
+        mapStyle={mapStyle}
+        accessToken={process.env.REACT_APP_MAPS_API_KEY}
+        latitude={viewport.latitude}
+        longitude={viewport.longitude}
+        zoom={viewport.zoom}
+        onViewportChange={setViewport}
+        className="map"
+        onClick={(event) => {
+              const { lngLat } = event;
+              // taking coords here
+              const newVewport = {
+                  ...viewport,
+            latitude: lngLat.lat,
+            longitude: lngLat.lng
+            };
+            
+          setViewport(newVewport);
+        }}
+      >
+        <Source id="maine" type="geojson" data={data} />
+        <Layer
+          id="maine"
+          type="fill"
+          source="maine"
+          paint={{
+            "fill-color": "#088",
+            "fill-opacity": 0.8,
+          }}
+        />
+        <GeolocateControl className="geo-control" />
+        <NavigationControl
+          showCompass={false}
+          showZoom
+          position="top-right"
+          mapStyle={{ background: "black" }}
+        />
+      </MapGL>
+    ));
+  }, []);
+
+  return <section>{maps}</section>;
 }

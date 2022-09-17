@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+}
+
+.lines {
+  border: 5px solid black;
+  width: 500px;
+  position: absolute;
+  height: 2px;
+  z-index: 2;
+}
+
+.line-1 {
+  top: 400px;
+}
+
+.line-2 {
+  top: 400px;
+}

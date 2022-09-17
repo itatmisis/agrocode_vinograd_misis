@@ -2,7 +2,10 @@
   position: absolute;
   height: 26vh;
   width: 17vw;
-  background-color: #fff;
+  color:white;
+  background: rgba(55, 55, 55, 0.48);
+    backdrop-filter: blur(28px);
+    border-radius: 24px;
   right:  calc( 21px);
   top: 120px;
   z-index: 1;

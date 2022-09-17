@@ -5,3 +5,7 @@
 body{
   margin: 0;
 }
+@font-face {
+  font-family: "Gilroy";
+  src: url("./fonts/Gilroy-Medium.ttf");
+}
