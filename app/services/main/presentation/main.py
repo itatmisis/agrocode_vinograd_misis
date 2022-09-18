@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from fastapi.responses import UJSONResponse
 from starlette.exceptions import ExceptionMiddleware
@@ -14,7 +15,15 @@ def create_app() -> FastAPI:
         redoc_url=None if app_settings.show_swagger else "/redoc",
         openapi_url=None if app_settings.show_swagger else "/openapi.json",
     )
-    fastapi_app.add_middleware(ExceptionMiddleware, handlers=fastapi_app.exception_handlers)
+    fastapi_app.add_middleware(
+        ExceptionMiddleware,
+        CORSMiddleware,
+        allow_origins = ["*"],
+        allow_credentials = True,
+        allow_methods = ["*"],
+        allow_headers = ["*"],
+        handlers=fastapi_app.exception_handlers
+    )
     fastapi_app.include_router(router)
     return fastapi_app
 

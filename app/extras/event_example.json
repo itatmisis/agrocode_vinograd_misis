@@ -1,4 +1,4 @@
-{
+  {
   "body": "\"{\"message\": \"HelloWorld\"}\"",
   "resource": "/time",
   "path": "/time",
