@@ -19,13 +19,6 @@ def create_app() -> FastAPI:
         ExceptionMiddleware,
         handlers=fastapi_app.exception_handlers
     )
-    fastapi_app.add_middleware(
-        CORSMiddleware,
-        allow_origins = ["*"],
-        allow_credentials = False,
-        allow_methods = ["*"],
-        allow_headers = ["*"]
-    )
     fastapi_app.include_router(router)
     return fastapi_app
 
