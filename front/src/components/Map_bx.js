@@ -63,7 +63,9 @@ export default function Map_bx({ mapStyle, viewport, setViewport, setIsDefPoint,
     setMaps(() => (
       <MapGL
         mapStyle={mapStyle}
-        accessToken={process.env.REACT_APP_MAPS_API_KEY}
+        accessToken={
+          "pk.eyJ1Ijoid29rZXIiLCJhIjoiY2w4M2NoMWNyMDRkbzNvbGt3aTQ4amJlMiJ9.WM0wJg_49jtHtqav1-l9zQ"
+        }
         latitude={viewport.latitude}
         longitude={viewport.longitude}
         zoom={viewport.zoom}
@@ -82,19 +84,21 @@ export default function Map_bx({ mapStyle, viewport, setViewport, setIsDefPoint,
           setViewport(() => newVewport);
           setIsDefPoint(false);
         }}
-      > {sources.map(()=>{
-          <Source  type="geojson" data={testData} />;
+      >
+        {" "}
+        {sources.map(() => {
+          <Source type="geojson" data={testData} />;
           <Layer
-          id="ma"
-          type="fill"
-          source="ma"
-          paint={{
-            "fill-color": "#088",
-            "fill-opacity": 0.8,
-          }} />
-      })}
+            id="ma"
+            type="fill"
+            source="ma"
+            paint={{
+              "fill-color": "#088",
+              "fill-opacity": 0.8,
+            }}
+          />;
+        })}
         <Source id="maine" type="geojson" data={data} />
-        
         <Layer
           id="maine"
           type="fill"
@@ -104,8 +108,6 @@ export default function Map_bx({ mapStyle, viewport, setViewport, setIsDefPoint,
             "fill-opacity": 0.8,
           }}
         />
-        
-        
         <GeolocateControl className="geo-control" />
         <NavigationControl
           showCompass={false}
