@@ -14,8 +14,8 @@ async def get_region_config():
     now = datetime.now(), int(datetime.now().timestamp())
     logger.info(now)
     return GetTimeResponse(timestamp=now[1], time=now[0]
-
+"""
 @router.post("/cords/")
 async def by_cords():
     return some_function()
-
+"""
