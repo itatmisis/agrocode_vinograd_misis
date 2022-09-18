@@ -17,12 +17,14 @@ def create_app() -> FastAPI:
     )
     fastapi_app.add_middleware(
         ExceptionMiddleware,
+        handlers=fastapi_app.exception_handlers
+    )
+    fastapi_app.add_middleware(
         CORSMiddleware,
         allow_origins = ["*"],
         allow_credentials = True,
         allow_methods = ["*"],
-        allow_headers = ["*"],
-        handlers=fastapi_app.exception_handlers
+        allow_headers = ["*"]
     )
     fastapi_app.include_router(router)
     return fastapi_app
