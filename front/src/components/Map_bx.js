@@ -83,8 +83,15 @@ export default function Map_bx({ mapStyle, viewport, setViewport, setIsDefPoint,
           setIsDefPoint(false);
         }}
       > {sources.map(()=>{
-          <Source id={`${uuidv4()}`} type="geojson" data={testData} />;
-
+          <Source  type="geojson" data={testData} />;
+          <Layer
+          id="ma"
+          type="fill"
+          source="ma"
+          paint={{
+            "fill-color": "#088",
+            "fill-opacity": 0.8,
+          }} />
       })}
         <Source id="maine" type="geojson" data={data} />
         
@@ -97,15 +104,8 @@ export default function Map_bx({ mapStyle, viewport, setViewport, setIsDefPoint,
             "fill-opacity": 0.8,
           }}
         />
-        <Layer
-          id="ma"
-          type="fill"
-          source="ma"
-          paint={{
-            "fill-color": "#088",
-            "fill-opacity": 0.8,
-          }}
-        />
+        
+        
         <GeolocateControl className="geo-control" />
         <NavigationControl
           showCompass={false}

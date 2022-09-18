@@ -1,20 +1,21 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
 import { toLatLon } from "utm";
 import { fromLatLon } from "utm";
-import Map_bx from './components/Map_bx';
-import OptionBtns from './components/OptionBtns';
+import Map_bx from "./components/Map_bx";
+import OptionBtns from "./components/OptionBtns";
 import Bookmarks from "./components/Bookmarks";
-import Filtres from './components/Filtres';
-import MainPage from './components/MainPage';
+import Filtres from "./components/Filtres";
+import MainPage from "./components/MainPage";
 import { Routes, Route, Link, json } from "react-router-dom";
-import Layers from './components/Layers';
+import Layers from "./components/Layers";
 function App() {
-  const [bookmarks,setBookmarks] = useState(()=>[])
+  const [bookmarks, setBookmarks] = useState(() => []);
   const [vineHouses, setVineHouses] = useState(() => [
     //example
-    { name: "Вина Придонья", coords: [19, 19] },
-    { name: "Добрые Вина", coords: [19, 18] }
+    { name: "Лефкадия", coords: [44.942348, 37.850501] },
+    { name: "Абрау Дюрсо", coords: [44.701748, 37.599908] },
+    { name: "Мысхако", coords: [44.667525, 37.760244] },
   ]);
   const [changes, setChanges] = useState({
     SOILTEXTURE: 0, // +- landType
@@ -23,7 +24,7 @@ function App() {
     TAVG: 0, //+
     RELIEF_ASPECT: 0, //+
     RELIEF_SLOPE: 0, //+ relifAspect
-    PREC:0 //+-
+    PREC: 0, //+-
   });
   const [needsToSave, setNeedsToSave] = useState(false);
   const [medianTemp, setMedianTemp] = useState(() => average(example.TAVG[0]));
@@ -33,16 +34,18 @@ function App() {
   const [landType, setLandType] = useState(() => [example.SOILTEXTURE]);
   const [slope, setSlope] = useState(() => Math.round(example.RELIEF_SLOPE));
   const [prek, setPrek] = useState(() => average(example.PREC[0]));
-  const [point,setPoint] = useState(()=>{""});
+  const [point, setPoint] = useState(() => {
+    "default";
+  });
   const [viewport, setViewport] = useState({
     latitude: 56.009097,
     longitude: 92.872515,
     zoom: 5,
   });
   ///
-  
+
   ///
-  useEffect(()=>{
+  useEffect(() => {
     let pushingData = JSON.stringify({
       TMAX: maxTemp,
       TMIN: minTemp,
@@ -59,12 +62,22 @@ function App() {
     })
       .then((response) => response.json())
       .then((res) => JSON.parse(res))
-      .then((result) => {setPoint(null)});
-     console.log("points",point)
-  },[viewport])
-  useEffect(()=>{
-    console.log(maxTemp,minTemp,medianTemp,relifAspect,landType,slope,prek)
-  })
+      .then((result) => {
+        setPoint(null);
+      });
+    console.log("points", point);
+  }, [viewport]);
+  useEffect(() => {
+    console.log(
+      maxTemp,
+      minTemp,
+      medianTemp,
+      relifAspect,
+      landType,
+      slope,
+      prek
+    );
+  });
   function FromJSONtoLatLon(res) {
     let ans = [
       toLatLon(
@@ -74,14 +87,23 @@ function App() {
         res["zoneLetter"]
       ),
     ];
-    return null
-    }
-        /*[(result["easting"], result["northing"])],
+    return ans;
+  }
+  console.clear();
+  console.log("UTM");
+  console.log(FromJSONtoLatLon({ easting: 505959.40497265797, northing: 2553302.5038646543, zoneNum: 38, zoneLetter: "D" }))
+  /*[(result["easting"], result["northing"])],
         [result["easting"] + 100, result["northing"]],
         [result["easting"] + 100, result["northing"] + 100],
         [result["easting"], result["northing"] + 100],*/
-      
-    
+
+  function handleStoreChoose(el) {
+    setViewport({
+      latitude: el.coords[0],
+      longitude: el.coords[1],
+      ...viewport,
+    });
+  }
   let defViewport = { latitude: 56.009097, longitude: 92.872515, zoom: 5 };
   const [isDefPoint, setIsDefPoint] = useState(
     () =>
@@ -89,15 +111,13 @@ function App() {
       viewport["longitude"] == defViewport["longitude"]
   );
   function handleSaveClick(params) {
+    if (!needsToSave) {
+      setNeedsToSave(() => !needsToSave);
 
-      if (!needsToSave) {
-        setNeedsToSave(() => !needsToSave);
-
-        setTimeout(() => {
-          setNeedsToSave(() => needsToSave);
-        }, 3000);
-      }
-    
+      setTimeout(() => {
+        setNeedsToSave(() => needsToSave);
+      }, 3000);
+    }
   }
   function average(list) {
     let summ = 0;
@@ -109,12 +129,16 @@ function App() {
   const [mapStyle, setMapStyle] = useState(
     "mapbox://styles/risinglight/cl83dlzfp003n15priila25c1"
   );
-  useEffect(()=>{console.log("rerender")
-console.log(fromLatLon(-67.13734351262877, 45.137451890638886),"utm")})
-  const [sub_windows, setSub_windows] = useState(()=>[0, 0]);
+  useEffect(() => {
+    console.log("rerender");
+    console.log(fromLatLon(-67.13734351262877, 45.137451890638886), "utm");
+  });
+  const [sub_windows, setSub_windows] = useState(() => [0, 0]);
+
   function handleBookmarksClick(params) {
     setSub_windows([!sub_windows[0], sub_windows[1]]);
   }
+
   function handleLayersClick(params) {
     setSub_windows([sub_windows[0], !sub_windows[1]]);
   }
@@ -129,6 +153,7 @@ console.log(fromLatLon(-67.13734351262877, 45.137451890638886),"utm")})
             element={
               <section>
                 <Filtres
+                  onStoreChoose={handleStoreChoose}
                   vineHouses={vineHouses}
                   landType={landType}
                   setLandType={setLandType}

@@ -1,5 +1,5 @@
 
-export default function SelectVineHouse({onStoreChoose,vineHouses}) {
+export default function SelectVineHouse({ onStoreChoose,vineHouses}) {
   return (
     <>
       <select
@@ -7,7 +7,7 @@ export default function SelectVineHouse({onStoreChoose,vineHouses}) {
         onChange={(e) => onStoreChoose(e.target.value)}
       >
         {vineHouses.map((el) => (
-          <option key={el} value={`${el.name}`}>
+          <option key={el} value={`${el}`}>
             {el.name}
           </option>
         ))}

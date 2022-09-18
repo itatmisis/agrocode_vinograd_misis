@@ -25,22 +25,21 @@ export default function Filtres({
   needsToSave,
   setNeedsToSave,
   prek,
-  setPrek
-  ,slope,
-  setSlope
-  ,onSaveClick
+  setPrek,
+  slope,
+  setSlope,
+  onSaveClick,
+  onStoreChoose,
 }) {
   const [helpWindow, setHelpWindow] = useState(false);
   // upload to server
-  
-  function handleStoreChoose(props) {
-    return null;
-  }
+
+
 
   return (
     <section className="filtres">
       <SelectVineHouse
-        onStoreChoose={handleStoreChoose}
+        onStoreChoose={onStoreChoose}
         vineHouses={vineHouses}
       />
       <WrapperList
