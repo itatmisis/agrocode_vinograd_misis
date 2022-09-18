@@ -28,18 +28,11 @@ export default function Filtres({
   setPrek
   ,slope,
   setSlope
+  ,onSaveClick
 }) {
   const [helpWindow, setHelpWindow] = useState(false);
   // upload to server
-  function handleSaveClick(params) {
-    if (!needsToSave) {
-      setNeedsToSave(()=>!needsToSave);
-      setTimeout(() => {
-        setNeedsToSave(()=>needsToSave);
-        
-      }, 3000);
-    }
-  }
+  
   function handleStoreChoose(props) {
     return null;
   }
@@ -73,7 +66,7 @@ export default function Filtres({
         setSlope={setSlope}
       />
       <HelpWindow helpWindow={helpWindow} />
-      <button className="save-btn btn" onClick={handleSaveClick}>
+      <button className="save-btn btn" onClick={onSaveClick}>
         Сохранить
       </button>
     </section>

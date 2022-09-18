@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import { toLatLon } from "utm";
 import { fromLatLon } from "utm";
 import Map_bx from './components/Map_bx';
 import OptionBtns from './components/OptionBtns';
 import Bookmarks from "./components/Bookmarks";
 import Filtres from './components/Filtres';
 import MainPage from './components/MainPage';
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, json } from "react-router-dom";
 import Layers from './components/Layers';
 function App() {
   const [bookmarks,setBookmarks] = useState(()=>[])
@@ -32,21 +33,72 @@ function App() {
   const [landType, setLandType] = useState(() => [example.SOILTEXTURE]);
   const [slope, setSlope] = useState(() => Math.round(example.RELIEF_SLOPE));
   const [prek, setPrek] = useState(() => average(example.PREC[0]));
+  const [point,setPoint] = useState(()=>{""});
   const [viewport, setViewport] = useState({
     latitude: 56.009097,
     longitude: 92.872515,
     zoom: 5,
   });
+  ///
+  
+  ///
+  useEffect(()=>{
+    let pushingData = JSON.stringify({
+      TMAX: maxTemp,
+      TMIN: minTemp,
+      TAVG: medianTemp,
+      RELIEF_ASPECT: relifAspect,
+      RELIEF_SLOPE: slope,
+      PREC: prek,
+      LATITUDE: viewport["latitude"],
+      LONGITUDE: viewport["longitude"],
+    });
+    fetch(" http://89.108.65.158", {
+      method: "POST",
+      body: pushingData,
+    })
+      .then((response) => response.json())
+      .then((res) => JSON.parse(res))
+      .then((result) => {setPoint(null)});
+     console.log("points",point)
+  },[viewport])
   useEffect(()=>{
     console.log(maxTemp,minTemp,medianTemp,relifAspect,landType,slope,prek)
   })
+  function FromJSONtoLatLon(res) {
+    let ans = [
+      toLatLon(
+        res["easting"],
+        res["northing"],
+        res["zoneNum"],
+        res["zoneLetter"]
+      ),
+    ];
+    return null
+    }
+        /*[(result["easting"], result["northing"])],
+        [result["easting"] + 100, result["northing"]],
+        [result["easting"] + 100, result["northing"] + 100],
+        [result["easting"], result["northing"] + 100],*/
+      
+    
   let defViewport = { latitude: 56.009097, longitude: 92.872515, zoom: 5 };
   const [isDefPoint, setIsDefPoint] = useState(
     () =>
       viewport["latitude"] == defViewport["latitude"] &&
       viewport["longitude"] == defViewport["longitude"]
   );
-  
+  function handleSaveClick(params) {
+
+      if (!needsToSave) {
+        setNeedsToSave(() => !needsToSave);
+
+        setTimeout(() => {
+          setNeedsToSave(() => needsToSave);
+        }, 3000);
+      }
+    
+  }
   function average(list) {
     let summ = 0;
     for (let i of list) {
@@ -96,6 +148,7 @@ console.log(fromLatLon(-67.13734351262877, 45.137451890638886),"utm")})
                   setPrek={setPrek}
                   slope={slope}
                   setSlope={setSlope}
+                  onSaveClick={handleSaveClick}
                 />
                 <div className="chooseDot">
                   {isDefPoint

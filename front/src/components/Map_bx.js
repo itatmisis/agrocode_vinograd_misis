@@ -5,6 +5,7 @@ import MapGL, {
   NavigationControl,
   
 } from "@urbica/react-map-gl";
+import { v4 as uuidv4 } from "uuid";
 import { useLayoutEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "../styles/Map_bx.css";
@@ -27,6 +28,7 @@ export default function Map_bx({ mapStyle, viewport, setViewport, setIsDefPoint,
       ],
     },
   };
+  let sources =[{}]
   const data = {
     type: "Feature",
     geometry: {
@@ -80,9 +82,12 @@ export default function Map_bx({ mapStyle, viewport, setViewport, setIsDefPoint,
           setViewport(() => newVewport);
           setIsDefPoint(false);
         }}
-      >
+      > {sources.map(()=>{
+          <Source id={`${uuidv4()}`} type="geojson" data={testData} />;
+
+      })}
         <Source id="maine" type="geojson" data={data} />
-        <Source id="ma" type="geojson" data={testData} />
+        
         <Layer
           id="maine"
           type="fill"
