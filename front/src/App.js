@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import { fromLatLon } from "utm";
 import Map_bx from './components/Map_bx';
 import OptionBtns from './components/OptionBtns';
 import Bookmarks from "./components/Bookmarks";
@@ -15,19 +16,36 @@ function App() {
     { name: "Добрые Вина", coords: [19, 18] }
   ]);
   const [changes, setChanges] = useState({
-    SOILTEXTURE: 0,
-    TMAX: 0,
-    TMIN: 0,
-    TAVG: 0,
-    RELIEF_ASPECT: 0,
-    RELIEF_SLOPE: 0
+    SOILTEXTURE: 0, // +- landType
+    TMAX: 0, //+
+    TMIN: 0, //+
+    TAVG: 0, //+
+    RELIEF_ASPECT: 0, //+
+    RELIEF_SLOPE: 0, //+ relifAspect
+    PREC:0 //+-
   });
   const [needsToSave, setNeedsToSave] = useState(false);
   const [medianTemp, setMedianTemp] = useState(() => average(example.TAVG[0]));
   const [maxTemp, setMaxTemp] = useState(() => average(example.TMAX[0]));
   const [minTemp, setMinTemp] = useState(() => average(example.TMIN[0]));
   const [relifAspect, setRelifAspect] = useState(() => example.RELIEF_ASPECT);
-  
+  const [landType, setLandType] = useState(() => [example.SOILTEXTURE]);
+  const [slope, setSlope] = useState(() => Math.round(example.RELIEF_SLOPE));
+  const [prek, setPrek] = useState(() => average(example.PREC[0]));
+  const [viewport, setViewport] = useState({
+    latitude: 56.009097,
+    longitude: 92.872515,
+    zoom: 5,
+  });
+  useEffect(()=>{
+    console.log(maxTemp,minTemp,medianTemp,relifAspect,landType,slope,prek)
+  })
+  let defViewport = { latitude: 56.009097, longitude: 92.872515, zoom: 5 };
+  const [isDefPoint, setIsDefPoint] = useState(
+    () =>
+      viewport["latitude"] == defViewport["latitude"] &&
+      viewport["longitude"] == defViewport["longitude"]
+  );
   
   function average(list) {
     let summ = 0;
@@ -39,7 +57,8 @@ function App() {
   const [mapStyle, setMapStyle] = useState(
     "mapbox://styles/risinglight/cl83dlzfp003n15priila25c1"
   );
-  useEffect(()=>{console.log("rerender")})
+  useEffect(()=>{console.log("rerender")
+console.log(fromLatLon(-67.13734351262877, 45.137451890638886),"utm")})
   const [sub_windows, setSub_windows] = useState(()=>[0, 0]);
   function handleBookmarksClick(params) {
     setSub_windows([!sub_windows[0], sub_windows[1]]);
@@ -59,7 +78,8 @@ function App() {
               <section>
                 <Filtres
                   vineHouses={vineHouses}
-                  landType={example.SOILTEXTURE}
+                  landType={landType}
+                  setLandType={setLandType}
                   medianTemp={medianTemp}
                   minTemp={minTemp}
                   maxTemp={maxTemp}
@@ -67,13 +87,21 @@ function App() {
                   setMinTemp={setMinTemp}
                   setMaxTemp={setMaxTemp}
                   relifAspect={relifAspect}
-                  setRelifAspect = {setRelifAspect}
+                  setRelifAspect={setRelifAspect}
                   angle={example.RELIEF_SLOPE}
                   abs_h={r}
-                  
                   needsToSave={needsToSave}
                   setNeedsToSave={setNeedsToSave}
+                  prek={prek}
+                  setPrek={setPrek}
+                  slope={slope}
+                  setSlope={setSlope}
                 />
+                <div className="chooseDot">
+                  {isDefPoint
+                    ? "Выберите место на карте"
+                    : `${viewport["latitude"]},${viewport["longitude"]}`}
+                </div>
                 <OptionBtns
                   onBookmarksClick={handleBookmarksClick}
                   onLayersClick={handleLayersClick}
@@ -85,7 +113,13 @@ function App() {
                   <></>
                 )}
                 {sub_windows[1] ? <Layers setMapStyle={setMapStyle} /> : <></>}
-                <Map_bx mapStyle={mapStyle}></Map_bx>
+                <Map_bx
+                  mapStyle={mapStyle}
+                  viewport={viewport}
+                  setViewport={setViewport}
+                  setIsDefPoint={setIsDefPoint}
+                  defViewport={defViewport}
+                ></Map_bx>
               </section>
             }
           />
