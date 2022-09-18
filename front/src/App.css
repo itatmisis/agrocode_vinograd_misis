@@ -6,3 +6,21 @@
 *{
   box-sizing: border-box;
 }
+.chooseDot{
+  top: 5%;
+    left: 37%;
+  position: absolute;
+  width: 314px;
+  height: 60px;
+  z-index: 1;
+  color: #7B9FFF;
+  background: rgba(123, 159, 255, 0.08);
+  display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center; 
+    border: 1.5px dashed #7B9FFF;
+    box-shadow: 0px 2px 8px rgba(0, 122, 255, 0.24);
+    backdrop-filter: blur(28px);
+    border-radius: 16px;
+}

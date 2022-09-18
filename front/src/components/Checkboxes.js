@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import "../styles/Checkboxes.css"
 export default function Checkboxes({ landType,choises,abs_h }) {
-  const [checked, setChecked] = useState([false].fill(false,choises.reduce((len,i)=>len+1)));
+  //const [checked, setChecked] = useState([false].fill(false,choises.reduce((len,i)=>len+1)));
   ;
-  function handleChange({ params }) {
-    setChecked(!checked);
+  let checked = [false].fill(false,choises.reduce((len,i)=>len+1))
+  function handleChange(index) {
+    checked[index] = !checked[index];
   }
   if (!abs_h){
     return (
       <div className="checkboxes">
         {choises.map((el, i) => {
           return (
-            <label>
+            <label key={`${i} ${el}`}>
               <input
                 type="checkbox"
-                checked={!checked || i==landType}
-                onChange={handleChange}
+                id={`${i}`}
+                checked={checked[i] || i==landType}
+                onChange={handleChange(i)}
               />
               {el}
             </label>
@@ -29,11 +31,12 @@ export default function Checkboxes({ landType,choises,abs_h }) {
       <div className="checkboxes">
         {choises.map((el, i) => {
           return (
-            <label>
+            <label key={`${i} ${el}`}>
               <input
                 type="checkbox"
-                checked={checked || i==abs_h}
-                onChange={handleChange}
+                id={`${i}`}
+                checked={checked[i] || i == abs_h}
+                onChange={handleChange(i)}
               />
               {el}
             </label>
