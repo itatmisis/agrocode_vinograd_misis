@@ -6,10 +6,12 @@ import SelectVineHouse from "./SelectVineHouse";
 import Angle from "./Angle";
 import Checkboxes from "./Checkboxes";
 import WrapperList from "./WrapperList";
+import HelpWindow from "./HelpWindow";
 
 export default function Filtres({
   vineHouses,
   landType,
+  setLandType,
   medianTemp,
   minTemp,
   maxTemp,
@@ -22,18 +24,15 @@ export default function Filtres({
   abs_h,
   needsToSave,
   setNeedsToSave,
+  prek,
+  setPrek
+  ,slope,
+  setSlope
+  ,onSaveClick
 }) {
   const [helpWindow, setHelpWindow] = useState(false);
   // upload to server
-  function handleSaveClick(params) {
-    if (!needsToSave) {
-      setNeedsToSave(()=>!needsToSave);
-      setTimeout(() => {
-        setNeedsToSave(()=>needsToSave);
-        
-      }, 3000);
-    }
-  }
+  
   function handleStoreChoose(props) {
     return null;
   }
@@ -48,6 +47,7 @@ export default function Filtres({
         helpWindow={helpWindow}
         setHelpWindow={setHelpWindow}
         landType={landType}
+        setLandType={setLandType}
         medianTemp={medianTemp}
         minTemp={minTemp}
         maxTemp={maxTemp}
@@ -58,19 +58,15 @@ export default function Filtres({
         setRelifAspect={setRelifAspect}
         Langle={angle}
         abs_h={abs_h}
-  
         needsToSave={needsToSave}
         setNeedsToSave={setNeedsToSave}
+        prek={prek}
+        setPrek={setPrek}
+        slope={slope}
+        setSlope={setSlope}
       />
-      {helpWindow && (
-        <div
-          className="section-bookmarks"
-          style={{ top: "0", right: "-74.2%" }}
-        >
-          Подсказка
-        </div>
-      )}
-      <button className="save-btn btn" onClick={handleSaveClick}>
+      <HelpWindow helpWindow={helpWindow} />
+      <button className="save-btn btn" onClick={onSaveClick}>
         Сохранить
       </button>
     </section>

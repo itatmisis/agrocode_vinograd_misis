@@ -8,6 +8,7 @@ export default function WrapperList({
   helpWindow,
   setHelpWindow,
   landType,
+  setLandType,
   medianTemp,
   minTemp,
   maxTemp,
@@ -20,11 +21,11 @@ export default function WrapperList({
   abs_h,
   needsToSave,
   setNeedsToSave,
+  prek,
+  setPrek,
+  slope,
+  setSlope,
 }) {
-  const [medianDownfall, setMedianDownfall] = useState(() =>
-    Math.round(relifAspect)
-  );
-  const [angle, setAngle] = useState(() => Math.round(Langle));
 
   let needScroll = true;
   const listWrapper = useRef(null);
@@ -49,32 +50,32 @@ export default function WrapperList({
             setNeedsToSave={setNeedsToSave}
           />
           <li className="option2 option">
-            <h4>Cреднее количество осадков: {medianDownfall}мм</h4>
+            <h4>Cреднее количество осадков: {prek}мм</h4>
             <HelpBtn helpWindow={helpWindow} setHelpWindow={setHelpWindow} />
             <input
               type="range"
-              onChange={(event) => setMedianDownfall(() => event.target.value)}
+              onChange={(event) => setPrek(() => event.target.value)}
               min={10}
               max={2000}
               step={0.1}
-              value={medianDownfall}
+              value={prek}
               className="slider-downfall"
             ></input>
           </li>
           <li className="option3 option">
-            <h4>уклон рельефа местности, °</h4>
+            <h4>уклон рельефа местности, °</h4> 
             <HelpBtn helpWindow={helpWindow} setHelpWindow={setHelpWindow} />
             <div className="ing">
               <div className="angle" />
-              <div className="view_angle">{angle}°</div>
+              <div className="view_angle">{slope}°</div>
             </div>
             <input
               type="range"
-              onChange={(event) => setAngle(() => event.target.value)}
+              onChange={(event) => setSlope(() => event.target.value)}
               min={5}
               max={45}
               step={1}
-              value={angle}
+              value={slope}
               className="slider"
             ></input>
           </li>
@@ -83,6 +84,7 @@ export default function WrapperList({
             <HelpBtn helpWindow={helpWindow} setHelpWindow={setHelpWindow} />
             <Checkboxes
               landType={landType}
+              setLandType={setLandType}
               choises={[
                 "Глина",
                 "Пылеватая глина",
@@ -105,6 +107,7 @@ export default function WrapperList({
             <div className="abs-img"></div>
             <Checkboxes
               landType={abs_h}
+              setLandType={setLandType}
               choises={[
                 "900-1200 м",
                 "1500-1900 м",
@@ -114,13 +117,13 @@ export default function WrapperList({
             ></Checkboxes>
           </li>
           <li className="option6 option">
-            Экспозиция (ориентация) рельефа местности
+            Экспозиция (ориентация) рельефа местности <>RELIEF_ASPECT</>
             <HelpBtn helpWindow={helpWindow} setHelpWindow={setHelpWindow} />
             <br />
             {
               //expos/
             }
-            <div style={{display:"flex", alignItems:"center"}}>
+            <div style={{ display: "flex", alignItems: "center" }}>
               <input
                 type="text"
                 placeholder={`${relifAspect}`}

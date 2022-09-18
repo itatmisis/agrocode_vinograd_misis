@@ -5,18 +5,30 @@ import MapGL, {
   NavigationControl,
   
 } from "@urbica/react-map-gl";
+import { v4 as uuidv4 } from "uuid";
 import { useLayoutEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "../styles/Map_bx.css";
-export default function Map_bx({ mapStyle }) {
-  const [viewport, setViewport] = useState({
-    latitude: 56.009097,
-    longitude: 92.872515,
-    zoom: 5,
-  });
+export default function Map_bx({ mapStyle, viewport, setViewport, setIsDefPoint,defViewport }) {
   const [maps, setMaps] = useState(() => <div className="map"></div>);
   // example of coords use
-
+  const testData = {
+    type: "Feature",
+    geometry: {
+      type: "Polygon",
+      coordinates: [
+        [
+          [59.801120013905546, 99.25079532201596],
+          [61.00857000538565, 103.87202887601632],
+          [64.4600714271441, 101.87331188974014],
+          [61.44727417109215, 88.534988101696][
+            (59.801120013905546, 99.25079532201596)
+          ],
+        ],
+      ],
+    },
+  };
+  let sources =[{}]
   const data = {
     type: "Feature",
     geometry: {
@@ -58,22 +70,37 @@ export default function Map_bx({ mapStyle }) {
         onViewportChange={setViewport}
         className="map"
         onClick={(event) => {
-              const { lngLat } = event;
-              // taking coords here
-              const newVewport = {
-                  ...viewport,
+          const { lngLat } = event;
+          // taking coords here
+          const newVewport = {
+            ...viewport,
             latitude: lngLat.lat,
-            longitude: lngLat.lng
-            };
-            
-          setViewport(newVewport);
+            longitude: lngLat.lng,
+          };
+          ////cooords
+          console.log(viewport);
+          setViewport(() => newVewport);
+          setIsDefPoint(false);
         }}
-      >
+      > {sources.map(()=>{
+          <Source id={`${uuidv4()}`} type="geojson" data={testData} />;
+
+      })}
         <Source id="maine" type="geojson" data={data} />
+        
         <Layer
           id="maine"
           type="fill"
           source="maine"
+          paint={{
+            "fill-color": "#088",
+            "fill-opacity": 0.8,
+          }}
+        />
+        <Layer
+          id="ma"
+          type="fill"
+          source="ma"
           paint={{
             "fill-color": "#088",
             "fill-opacity": 0.8,
