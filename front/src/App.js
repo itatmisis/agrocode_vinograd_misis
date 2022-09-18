@@ -14,6 +14,28 @@ function App() {
     { name: "Вина Придонья", coords: [19, 19] },
     { name: "Добрые Вина", coords: [19, 18] }
   ]);
+  const [changes, setChanges] = useState({
+    SOILTEXTURE: 0,
+    TMAX: 0,
+    TMIN: 0,
+    TAVG: 0,
+    RELIEF_ASPECT: 0,
+    RELIEF_SLOPE: 0
+  });
+  const [needsToSave, setNeedsToSave] = useState(false);
+  const [medianTemp, setMedianTemp] = useState(() => average(example.TAVG[0]));
+  const [maxTemp, setMaxTemp] = useState(() => average(example.TMAX[0]));
+  const [minTemp, setMinTemp] = useState(() => average(example.TMIN[0]));
+  const [relifAspect, setRelifAspect] = useState(() => example.RELIEF_ASPECT);
+  
+  
+  function average(list) {
+    let summ = 0;
+    for (let i of list) {
+      summ += i;
+    }
+    return Math.round(summ / 12);
+  }
   const [mapStyle, setMapStyle] = useState(
     "mapbox://styles/risinglight/cl83dlzfp003n15priila25c1"
   );
@@ -38,11 +60,19 @@ function App() {
                 <Filtres
                   vineHouses={vineHouses}
                   landType={example.SOILTEXTURE}
-                  tmax={example.TMAX}
-                  tmin={example.TMIN}
-                  tavr={example.TAVG}
-                  relifAspect={example.RELIEF_ASPECT}
+                  medianTemp={medianTemp}
+                  minTemp={minTemp}
+                  maxTemp={maxTemp}
+                  setMedianTemp={setMedianTemp}
+                  setMinTemp={setMinTemp}
+                  setMaxTemp={setMaxTemp}
+                  relifAspect={relifAspect}
+                  setRelifAspect = {setRelifAspect}
                   angle={example.RELIEF_SLOPE}
+                  abs_h={r}
+                  
+                  needsToSave={needsToSave}
+                  setNeedsToSave={setNeedsToSave}
                 />
                 <OptionBtns
                   onBookmarksClick={handleBookmarksClick}
@@ -94,3 +124,13 @@ const example = {
   VINEYARDS: false, //Территории, занятые виноградниками:
   WATER_SEASONALYTY: 0,
 };
+let r = 0;
+if (example.RELIEF_HEIGHT <= 1200) {
+  r = 0;
+} else if (example.RELIEF_HEIGHT <= 1500) {
+  r = 1;
+} else if (example.RELIEF_HEIGHT <= 1900) {
+  r = 2;
+} else {
+  r = 3;
+}

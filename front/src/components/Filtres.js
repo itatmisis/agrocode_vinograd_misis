@@ -10,13 +10,30 @@ import WrapperList from "./WrapperList";
 export default function Filtres({
   vineHouses,
   landType,
-  tmax,
-  tmin,
-  tavr,
+  medianTemp,
+  minTemp,
+  maxTemp,
+  setMedianTemp,
+  setMinTemp,
+  setMaxTemp,
   relifAspect,
-  angle
+  setRelifAspect,
+  angle,
+  abs_h,
+  needsToSave,
+  setNeedsToSave,
 }) {
   const [helpWindow, setHelpWindow] = useState(false);
+  // upload to server
+  function handleSaveClick(params) {
+    if (!needsToSave) {
+      setNeedsToSave(()=>!needsToSave);
+      setTimeout(() => {
+        setNeedsToSave(()=>needsToSave);
+        
+      }, 3000);
+    }
+  }
   function handleStoreChoose(props) {
     return null;
   }
@@ -31,20 +48,31 @@ export default function Filtres({
         helpWindow={helpWindow}
         setHelpWindow={setHelpWindow}
         landType={landType}
-        tmax={tmax}
-        tmin={tmin}
-        tavr={tavr}
+        medianTemp={medianTemp}
+        minTemp={minTemp}
+        maxTemp={maxTemp}
+        setMedianTemp={setMedianTemp}
+        setMinTemp={setMinTemp}
+        setMaxTemp={setMaxTemp}
         relifAspect={relifAspect}
+        setRelifAspect={setRelifAspect}
         Langle={angle}
+        abs_h={abs_h}
+  
+        needsToSave={needsToSave}
+        setNeedsToSave={setNeedsToSave}
       />
       {helpWindow && (
         <div
           className="section-bookmarks"
-          style={{ top: "0", right: "-54.2%" }}
+          style={{ top: "0", right: "-74.2%" }}
         >
           Подсказка
         </div>
       )}
+      <button className="save-btn btn" onClick={handleSaveClick}>
+        Сохранить
+      </button>
     </section>
   );
 }

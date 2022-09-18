@@ -1,16 +1,15 @@
 import HelpBtn from "./HelpBtn";
-import {  useState } from "react";
-export default function Temperature({ helpWindow, setHelpWindow, tmax, tmin, tavr }) {
-  const [medianTemp, setMedianTemp] = useState(() => average(tavr[0]));
-  const [maxTemp, setMaxTemp] = useState(() => average(tmax[0]));
-  const [minTemp, setMinTemp] = useState(() => average(tmin[0]));
-  function average(list) {
-    let summ = 0;
-    for(let i of list){
-      summ+=i
-    }
-    return Math.round(summ/12)
-  }
+import {  useEffect, useState } from "react";
+export default function Temperature({
+  helpWindow,
+  setHelpWindow,
+  medianTemp,
+  minTemp,
+  maxTemp,
+  setMedianTemp,
+  setMinTemp,
+  setMaxTemp,
+}) {
   return (
     <>
       <li className="option1 option">
@@ -20,8 +19,8 @@ export default function Temperature({ helpWindow, setHelpWindow, tmax, tmin, tav
         <input
           type="range"
           onChange={(event) => setMedianTemp(() => event.target.value)}
-          min={-55}
-          max={55}
+          min={-100}
+          max={100}
           step={0.1}
           value={medianTemp}
           className="slider medianSlider"
@@ -30,8 +29,8 @@ export default function Temperature({ helpWindow, setHelpWindow, tmax, tmin, tav
         <input
           type="range"
           onChange={(event) => setMaxTemp(() => event.target.value)}
-          min={-55}
-          max={55}
+          min={-100}
+          max={100}
           step={0.1}
           value={maxTemp}
           className="slider maxSlider"
@@ -40,8 +39,8 @@ export default function Temperature({ helpWindow, setHelpWindow, tmax, tmin, tav
         <input
           type="range"
           onChange={(event) => setMinTemp(() => event.target.value)}
-          min={-55}
-          max={55}
+          min={-100}
+          max={100}
           step={0.1}
           value={minTemp}
           className="slider minSlider"

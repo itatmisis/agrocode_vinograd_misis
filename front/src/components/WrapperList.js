@@ -3,16 +3,23 @@ import "../styles/Filtres.css";
 import { useScrollbar } from "../hooks/useScrollbar";
 import Checkboxes from "./Checkboxes";
 import Temperature from "./Temperature";
-
+import HelpBtn from "./HelpBtn";
 export default function WrapperList({
   helpWindow,
   setHelpWindow,
   landType,
-  tmax,
-  tmin,
-  tavr,
+  medianTemp,
+  minTemp,
+  maxTemp,
+  setMedianTemp,
+  setMinTemp,
+  setMaxTemp,
   relifAspect,
-  Langle
+  setRelifAspect,
+  Langle,
+  abs_h,
+  needsToSave,
+  setNeedsToSave,
 }) {
   const [medianDownfall, setMedianDownfall] = useState(() =>
     Math.round(relifAspect)
@@ -32,12 +39,18 @@ export default function WrapperList({
           <Temperature
             helpWindow={helpWindow}
             setHelpWindow={setHelpWindow}
-            tmax={tmax}
-            tmin={tmin}
-            tavr={tavr}
+            medianTemp={medianTemp}
+            minTemp={minTemp}
+            maxTemp={maxTemp}
+            setMedianTemp={setMedianTemp}
+            setMinTemp={setMinTemp}
+            setMaxTemp={setMaxTemp}
+            needsToSave={needsToSave}
+            setNeedsToSave={setNeedsToSave}
           />
           <li className="option2 option">
             <h4>Cреднее количество осадков: {medianDownfall}мм</h4>
+            <HelpBtn helpWindow={helpWindow} setHelpWindow={setHelpWindow} />
             <input
               type="range"
               onChange={(event) => setMedianDownfall(() => event.target.value)}
@@ -49,7 +62,8 @@ export default function WrapperList({
             ></input>
           </li>
           <li className="option3 option">
-            уклон рельефа местности, °
+            <h4>уклон рельефа местности, °</h4>
+            <HelpBtn helpWindow={helpWindow} setHelpWindow={setHelpWindow} />
             <div className="ing">
               <div className="angle" />
               <div className="view_angle">{angle}°</div>
@@ -65,8 +79,57 @@ export default function WrapperList({
             ></input>
           </li>
           <li className="option4 option">
-            Оценка состава и плотности сложения верхнего слоя почв
-            <Checkboxes landType={landType}></Checkboxes>
+            <h4>Оценка состава и плотности сложения верхнего слоя почв</h4>
+            <HelpBtn helpWindow={helpWindow} setHelpWindow={setHelpWindow} />
+            <Checkboxes
+              landType={landType}
+              choises={[
+                "Глина",
+                "Пылеватая глина",
+                "Пылевато-глинистый суглинок",
+                "Опесчаненная глина",
+                "Опесчаненный глинистый суглинок",
+                "Глинистый суглинок",
+                "Тонкий суглинок",
+                "Пылеватый суглинок",
+                "Суглинок",
+                "Песок",
+                "Суглинистый песок",
+                "Опесчаненный суглинок",
+              ]}
+            ></Checkboxes>
+          </li>
+          <li className="option5 option">
+            Абсолютная отметка местности
+            <HelpBtn helpWindow={helpWindow} setHelpWindow={setHelpWindow} />
+            <div className="abs-img"></div>
+            <Checkboxes
+              landType={abs_h}
+              choises={[
+                "900-1200 м",
+                "1500-1900 м",
+                "1200-1500 м",
+                "1900-2100 м",
+              ]}
+            ></Checkboxes>
+          </li>
+          <li className="option6 option">
+            Экспозиция (ориентация) рельефа местности
+            <HelpBtn helpWindow={helpWindow} setHelpWindow={setHelpWindow} />
+            <br />
+            {
+              //expos/
+            }
+            <div style={{display:"flex", alignItems:"center"}}>
+              <input
+                type="text"
+                placeholder={`${relifAspect}`}
+                className="expos-input"
+                value={relifAspect}
+                onChange={(e) => setRelifAspect(e.target.value)}
+              />
+              <div className="expos-img"></div>
+            </div>
           </li>
         </ul>
       </div>

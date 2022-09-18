@@ -1,65 +1,55 @@
 import { useEffect, useState } from "react";
 import "../styles/Checkboxes.css"
-export default function Checkboxes({ landType }) {
-  const [checked, setChecked] = useState([false]);
-  useEffect(()=>{
-
-  },[])
+export default function Checkboxes({ landType,choises,abs_h }) {
+  const [checked, setChecked] = useState([false].fill(false,choises.reduce((len,i)=>len+1)));
+  ;
   function handleChange({ params }) {
     setChecked(!checked);
   }
-  
-  return (
-    <div className="checkboxes">
-      {}
-      <label>
-        <input type="checkbox" checked={landType ==1} onChange={handleChange} />
-        Глина
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==2} onChange={handleChange} />
-        Пылеватая глина
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==3} onChange={handleChange} />
-        Пылевато-глинистый суглинок
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==4} onChange={handleChange} />
-        Опесчаненная глина
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==5} onChange={handleChange} />
-        Опесчаненный глинистый суглинок
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==6} onChange={handleChange} />
-        Глинистый суглинок
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==7} onChange={handleChange} />
-        Тонкий суглинок
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==8} onChange={handleChange} />
-        Пылеватый суглинок
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==9} onChange={handleChange} />
-        Суглинок
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==10} onChange={handleChange} />
-        Песок
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==11} onChange={handleChange} />
-        Суглинистый песок
-      </label>
-      <label>
-        <input type="checkbox" checked={landType ==12} onChange={handleChange} />
-        Опесчаненный суглинок
-      </label>
-    </div>
-  );
+  if (!abs_h){
+    return (
+      <div className="checkboxes">
+        {choises.map((el, i) => {
+          return (
+            <label>
+              <input
+                type="checkbox"
+                checked={!checked || i==landType}
+                onChange={handleChange}
+              />
+              {el}
+            </label>
+          );
+        })}
+      </div>
+    );
+  }
+  else{
+    return (
+      <div className="checkboxes">
+        {choises.map((el, i) => {
+          return (
+            <label>
+              <input
+                type="checkbox"
+                checked={checked || i==abs_h}
+                onChange={handleChange}
+              />
+              {el}
+            </label>
+          );
+        })}
+      </div>
+    );
+  }
 }
+/*
+function Tget(objectR){
+  for (каждого ключа){
+    if (значение !=0){
+      data = fetch("адресс сервера или что")
+    }
+  }
+  заполнение объекта измененными параметрами
+}
+*/
