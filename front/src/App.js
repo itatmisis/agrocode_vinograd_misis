@@ -89,7 +89,7 @@ function App() {
     ];
     return ans;
   }
-  console.clear();
+  
   console.log("UTM");
   console.log(FromJSONtoLatLon({ easting: 505959.40497265797, northing: 2553302.5038646543, zoneNum: 38, zoneLetter: "D" }))
   /*[(result["easting"], result["northing"])],
